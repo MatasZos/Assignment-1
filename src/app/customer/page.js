@@ -12,9 +12,9 @@ import {
 } from '@mui/material';
 
 export default function CustomerPage() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     async function fetchProducts() {
       const res = await fetch('/api/products');
       const data = await res.json();
@@ -22,6 +22,7 @@ export default function CustomerPage() {
     }
     fetchProducts();
   }, []);
+
 
   return (
     <Container>
