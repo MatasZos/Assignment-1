@@ -20,7 +20,7 @@ export default function CustomerPage() {
         <Typography variant="h4">Customer Menu</Typography>
 
         {products.length === 0 && (
-          <Typography sx={{ mt: 2 }}>No products found.</Typography>
+          <Typography sx={{ mt: 2 }}>Products loaading...</Typography>
         )}
 
         {products.map((p) => (
