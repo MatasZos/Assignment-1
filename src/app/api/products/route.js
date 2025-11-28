@@ -7,7 +7,7 @@ export async function GET() {
   try {
     await client.connect();
     const db = client.db('app');
-    const products = await db.collection('Products').find({}).toArray();
+    const products = await db.collection('products').find({}).toArray();
 
     return Response.json(products);
   } catch (err) {
