@@ -26,7 +26,13 @@ export default function LoginPage() {
     const data = await res.json();
     if (data.success) {
       setMessage('Login successful! Redirecting...');
-      setTimeout(() => router.push('/customer'), 1500);
+      setTimeout(() => {
+        if (data.accountType === 'manager') {
+          router.push('/manager');  
+        } else {
+          router.push('/customer');  
+        }
+      }, 1500);
     } else {
       setMessage(data.error || 'Login failed');
     }

@@ -25,14 +25,14 @@ export async function POST(req) {
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Insert new user
-    const result = await users.insertOne({
-      username,
-      email,
-      password: hashedPassword,
-      createdAt: new Date(),
-    });
+    
+const result = await users.insertOne({
+  username,
+  email,
+  password: hashedPassword,
+  accountType: "customer",  
+  createdAt: new Date(),
+});
 
     return Response.json({ success: true, userId: result.insertedId });
   } catch (err) {

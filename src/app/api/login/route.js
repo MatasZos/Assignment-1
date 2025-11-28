@@ -30,7 +30,8 @@ export async function POST(req) {
     }
 
     // Success
-    return Response.json({ success: true, userId: user._id });
+    r// Success
+return Response.json({ success: true, userId: user._id, accountType: user.accountType });
   } catch (err) {
     console.error('Error logging in:', err);
     return Response.json({ error: 'Failed to login' }, { status: 500 });
