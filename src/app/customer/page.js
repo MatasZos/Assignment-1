@@ -1,6 +1,15 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { Container, Box, Typography, Card, CardContent, CardMedia } from '@mui/material';
+import * as React from 'react';
+import {
+  Container,
+  Box,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  Button,
+} from '@mui/material';
 
 export default function CustomerPage() {
   const [products, setProducts] = useState([]);
@@ -17,27 +26,48 @@ export default function CustomerPage() {
   return (
     <Container>
       <Box sx={{ mt: 4 }}>
-        <Typography variant="h4">Customer Menu</Typography>
+        <Typography variant="h4" gutterBottom>
+          Customer Menu
+        </Typography>
 
-        {products.length === 0 && (
-          <Typography sx={{ mt: 2 }}>Products loaading...</Typography>
+        {products.length === 0 ? (
+          <Typography sx={{ mt: 2 }}>Products loading...</Typography>
+        ) : (
+          <Grid container spacing={3}>
+            {products.map((p) => (
+              <Grid item xs={12} sm={6} key={p._id ?? p.title}>
+                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={p.image}
+                    alt={p.title}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" gutterBottom>
+                      {p.title}
+                    </Typography>
+                    <Typography variant="body2" gutterBottom>
+                      {p.description}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                      €{p.price}
+                    </Typography>
+                    <Button variant="contained" color="primary" fullWidth>
+                      Add to Cart
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         )}
 
-        {products.map((p) => (
-          <Card key={p._id ?? p.title} sx={{ mt: 2 }}>
-            <CardMedia
-              component="img"
-              height="140"
-              image={p.image}
-              alt={p.title}
-            />
-            <CardContent>
-              <Typography variant="h6">{p.title}</Typography>
-              <Typography>{p.description}</Typography>
-              <Typography>€{p.price}</Typography>
-            </CardContent>
-          </Card>
-        ))}
+        <Box sx={{ mt: 6, textAlign: 'center' }}>
+          <Button variant="outlined" color="secondary" size="large">
+            View Cart
+          </Button>
+        </Box>
       </Box>
     </Container>
   );
