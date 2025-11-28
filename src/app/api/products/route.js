@@ -1,5 +1,4 @@
-import clientPromise from '@/lib/mongo';
-
+import clientPromise from '@/mongo';
 export async function GET() {
   const client = await clientPromise;
   const db = client.db('app');
