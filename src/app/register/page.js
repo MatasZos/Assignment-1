@@ -1,10 +1,10 @@
-'use client'
+'use client';
 import React from 'react';
-import Container from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import TextField  from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 export default function RegisterPage() {
   return (
@@ -14,7 +14,9 @@ export default function RegisterPage() {
         <form>
           <TextField label="Email" name="email" fullWidth required />
           <TextField label="Password" name="password" type="password" fullWidth required />
-          <Button variant="contained" sx={{ mt: 2 }} type="submit">Sign Up</Button>
+          <Button variant="contained" sx={{ mt: 2 }} type="submit">
+            Sign Up
+          </Button>
         </form>
       </Box>
     </Container>
