@@ -1,8 +1,19 @@
-import clientPromise from '@/mongo';
-export async function GET() {
-  const client = await clientPromise;
-  const db = client.db('app');
-  const products = await db.collection('Products').find({}).toArray();
+import { MongoClient } from 'mongodb';
 
-  return Response.json(products);
+export async function GET() {
+  const uri = process.env.MONGO_URL;
+  const client = new MongoClient(uri);
+
+  try {
+    await client.connect();
+    const db = client.db('app');
+    const products = await db.collection('Products').find({}).toArray();
+
+    return Response.json(products);
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    return Response.json({ error: 'Failed to fetch products' }, { status: 500 });
+  } finally {
+    await client.close();
+  }
 }

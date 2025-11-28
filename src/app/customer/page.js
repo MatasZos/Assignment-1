@@ -18,12 +18,17 @@ export default function CustomerPage() {
     <Container>
       <Box sx={{ mt: 4 }}>
         <Typography variant="h4">Customer Menu</Typography>
+
+        {products.length === 0 && (
+          <Typography sx={{ mt: 2 }}>No products found.</Typography>
+        )}
+
         {products.map((p) => (
-          <Card key={p._id} sx={{ mt: 2 }}>
+          <Card key={p._id ?? p.title} sx={{ mt: 2 }}>
             <CardMedia
               component="img"
               height="140"
-              image={p.image} 
+              image={p.image}
               alt={p.title}
             />
             <CardContent>
