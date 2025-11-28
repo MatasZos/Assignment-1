@@ -23,9 +23,8 @@ export async function POST(req) {
       return Response.json({ error: 'User already exists' }, { status: 400 });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
 const result = await users.insertOne({
   username,
   email,

@@ -29,8 +29,6 @@ export async function POST(req) {
       return Response.json({ error: 'Invalid password' }, { status: 401 });
     }
 
-    // Success
-    r// Success
 return Response.json({ success: true, userId: user._id, accountType: user.accountType });
   } catch (err) {
     console.error('Error logging in:', err);
