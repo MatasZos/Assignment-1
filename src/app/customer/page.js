@@ -13,7 +13,7 @@ export default function CustomerPage() {
 
   const addToCart = async (pname) => {
     // call the putInCart API
-    const res = await fetch(`/api/putInCart?pname=${pname}&email=customer@test.com`);
+    const res = await fetch(`/api/putInCart?pname=${pname}&email=mataszos@test.com`);
     const data = await res.json();
     alert(data.data);
   };
