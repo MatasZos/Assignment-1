@@ -1,32 +1,23 @@
 import { MongoClient } from 'mongodb';
 
-export async function POST(req) {
-  const uri = process.env.MONGO_URL;
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const pname = searchParams.get('pname');
+  const email = searchParams.get('email');
+
+  const uri = "mongodb+srv://root:myPassword123@cluster0.dsxawqy.mongodb.net/?appName=Cluster0";
   const client = new MongoClient(uri);
+  await client.connect();
 
-  try {
-    const body = await req.json();
-    const { userId, product } = body;
+  const db = client.db('app');
+  const orders = db.collection('Orders');
 
-    if (!userId || !product) {
-      return Response.json({ error: 'Missing fields' }, { status: 400 });
-    }
+  await orders.insertOne({
+    userEmail: email,
+    items: [{ pname }],
+    createdAt: new Date()
+  });
 
-    await client.connect();
-    const db = client.db('app');
-    const carts = db.collection('Carts');
-
-    await carts.updateOne(
-      { userId },
-      { $push: { items: product } },
-      { upsert: true }
-    );
-
-    return Response.json({ success: true });
-  } catch (err) {
-    console.error('Error adding to cart:', err);
-    return Response.json({ error: 'Failed to add to cart' }, { status: 500 });
-  } finally {
-    await client.close();
-  }
+  // return result
+  return Response.json({ data: "inserted" });
 }

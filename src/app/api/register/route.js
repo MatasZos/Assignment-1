@@ -1,43 +1,20 @@
 import { MongoClient } from 'mongodb';
 import bcrypt from 'bcrypt';
 
-export async function POST(req) {
-  const uri = process.env.MONGO_URL;
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const email = searchParams.get('email');
+  const pass = searchParams.get('pass');
+
+  const uri = "mongodb+srv://root:myPassword123@cluster0.dsxawqy.mongodb.net/?appName=Cluster0";
   const client = new MongoClient(uri);
+  await client.connect();
 
-  try {
-    const body = await req.json();
-    const { username, email, password } = body;
+  const db = client.db('app');
+  const users = db.collection('Users');
 
-    if (!username || !email || !password) {
-      return Response.json({ error: 'Missing fields' }, { status: 400 });
-    }
+  const hash = await bcrypt.hash(pass, 10);
+  await users.insertOne({ email, passwordHash: hash, role: "customer" });
 
-    await client.connect();
-    const db = client.db('app');
-    const users = db.collection('Users');
-
-    // Check if user already exists
-    const existing = await users.findOne({ email });
-    if (existing) {
-      return Response.json({ error: 'User already exists' }, { status: 400 });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-const result = await users.insertOne({
-  username,
-  email,
-  password: hashedPassword,
-  accountType: "customer",  
-  createdAt: new Date(),
-});
-
-    return Response.json({ success: true, userId: result.insertedId });
-  } catch (err) {
-    console.error('Error registering user:', err);
-    return Response.json({ error: 'Failed to register' }, { status: 500 });
-  } finally {
-    await client.close();
-  }
+  return Response.json({ data: "registered" });
 }

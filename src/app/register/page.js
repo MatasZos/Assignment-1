@@ -1,79 +1,41 @@
 'use client';
-import React, { useState } from 'react';
-import { Container, Box, TextField, Button, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Container, TextField, Button, Typography } from '@mui/material';
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ username: '', email: '', password: '' });
-  const [message, setMessage] = useState('');
-  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage('Registering...');
-
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    });
-
+  const handleRegister = async () => {
+    const res = await fetch(`/api/register?email=${email}&pass=${pass}`);
     const data = await res.json();
-    if (data.success) {
-      setMessage('Registration successful! Redirecting to login...');
-      setTimeout(() => router.push('/login'), 1500); // redirect after 1.5s
-    } else {
-      setMessage(data.error || 'Registration failed');
-    }
+    alert(data.data);
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Register
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <TextField
-            label="Username"
-            name="username"
-            fullWidth
-            margin="normal"
-            value={form.username}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Email"
-            name="email"
-            type="email"
-            fullWidth
-            margin="normal"
-            value={form.email}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Password"
-            name="password"
-            type="password"
-            fullWidth
-            margin="normal"
-            value={form.password}
-            onChange={handleChange}
-          />
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-            Register
-          </Button>
-        </form>
-        {message && (
-          <Typography sx={{ mt: 2 }} color="secondary">
-            {message}
-          </Typography>
-        )}
-      </Box>
+    <Container maxWidth="xs" sx={{ mt: 5 }}>
+      <Typography variant="h4" gutterBottom>Register</Typography>
+      <TextField
+        fullWidth
+        label="Email"
+        margin="normal"
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <TextField
+        fullWidth
+        label="Password"
+        type="password"
+        margin="normal"
+        onChange={(e) => setPass(e.target.value)}
+      />
+      <Button
+        fullWidth
+        variant="contained"
+        sx={{ mt: 2 }}
+        onClick={handleRegister}
+      >
+        Register
+      </Button>
     </Container>
   );
 }

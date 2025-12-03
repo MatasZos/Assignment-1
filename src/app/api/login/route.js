@@ -1,39 +1,28 @@
 import { MongoClient } from 'mongodb';
 import bcrypt from 'bcrypt';
 
-export async function POST(req) {
-  const uri = process.env.MONGO_URL;
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const email = searchParams.get('email');
+  const pass = searchParams.get('pass');
+
+  const uri = "mongodb+srv://root:myPassword123@cluster0.dsxawqy.mongodb.net/?appName=Cluster0";
   const client = new MongoClient(uri);
+  await client.connect();
 
-  try {
-    const body = await req.json();
-    const { email, password } = body;
+  const db = client.db('app');
+  const users = db.collection('Users');
 
-    if (!email || !password) {
-      return Response.json({ error: 'Missing fields' }, { status: 400 });
-    }
+  const user = await users.findOne({ email });
 
-    await client.connect();
-    const db = client.db('app');
-    const users = db.collection('Users');
+  let valid = false;
+  let role = null;
 
-    // Find user by email
-    const user = await users.findOne({ email });
-    if (!user) {
-      return Response.json({ error: 'User not found' }, { status: 401 });
-    }
-
-    // Compare password
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return Response.json({ error: 'Invalid password' }, { status: 401 });
-    }
-
-return Response.json({ success: true, userId: user._id, accountType: user.accountType });
-  } catch (err) {
-    console.error('Error logging in:', err);
-    return Response.json({ error: 'Failed to login' }, { status: 500 });
-  } finally {
-    await client.close();
+  if (user && await bcrypt.compare(pass, user.passwordHash)) {
+    valid = true;
+    role = user.role;
   }
+
+  // return result
+  return Response.json({ valid, role });
 }

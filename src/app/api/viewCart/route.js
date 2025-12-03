@@ -11,11 +11,7 @@ export async function GET(req) {
   const db = client.db('app');
   const orders = db.collection('Orders');
 
-  await orders.updateMany(
-    { userEmail: email },
-    { $set: { status: "confirmed" } }
-  );
+  const cartItems = await orders.find({ userEmail: email }).toArray();
 
-  // return result
-  return Response.json({ data: "order placed" });
+  return Response.json(cartItems);
 }

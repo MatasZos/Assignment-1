@@ -6,9 +6,9 @@ export async function GET() {
   await client.connect();
 
   const db = client.db('app');
-  const products = db.collection('Products');
+  const orders = db.collection('Orders');
 
-  const allProducts = await products.find({}).toArray();
+  const allOrders = await orders.find({}).toArray();
 
-  return Response.json(allProducts);
+  return Response.json(allOrders);
 }
