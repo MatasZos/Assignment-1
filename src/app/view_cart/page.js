@@ -1,43 +1,47 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import {
-  Container,
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
+  Container, Box, Typography, Card, CardContent, CardMedia, Button,
 } from '@mui/material';
 
 export default function ViewCartPage() {
   const [cart, setCart] = useState([]);
+  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
 
   useEffect(() => {
-    const stored = localStorage.getItem('cart');
-    if (stored) {
-      setCart(JSON.parse(stored));
+    async function fetchCart() {
+      if (!userId) return;
+      const res = await fetch(`/api/getCart?userId=${userId}`);
+      const data = await res.json();
+      setCart(data.items || []);
     }
-  }, []);
+    fetchCart();
+  }, [userId]);
 
-  const removeItem = (index) => {
-    const updated = cart.filter((_, i) => i !== index);
-    setCart(updated);
-    localStorage.setItem('cart', JSON.stringify(updated));
+  const removeItem = async (index) => {
+    await fetch('/api/removeFromCart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, index }),
+    });
+    setCart(cart.filter((_, i) => i !== index));
   };
 
-  const clearCart = () => {
+  const clearCart = async () => {
+    await fetch('/api/clearCart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId }),
+    });
     setCart([]);
-    localStorage.removeItem('cart');
   };
+
+  const total = cart.reduce((sum, item) => sum + (item.price || 0), 0);
 
   return (
     <Container>
       <Box sx={{ mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Your Cart
-        </Typography>
-
+        <Typography variant="h4" gutterBottom>Your Cart</Typography>
         {cart.length === 0 ? (
           <Typography sx={{ mt: 2 }}>Your cart is empty.</Typography>
         ) : (
@@ -61,12 +65,8 @@ export default function ViewCartPage() {
               </Card>
             ))}
             <Box sx={{ mt: 4, textAlign: 'center' }}>
-              <Button
-                variant="contained"
-                color="error"
-                size="large"
-                onClick={clearCart}
-              >
+              <Typography variant="h6">Total: €{total}</Typography>
+              <Button variant="contained" color="error" size="large" onClick={clearCart} sx={{ mt: 2 }}>
                 Clear Cart
               </Button>
             </Box>

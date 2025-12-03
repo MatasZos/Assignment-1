@@ -1,100 +1,86 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Container,
-  Box,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Button,
+  Container, Box, Typography, Grid, Card, CardContent, Button,
 } from '@mui/material';
 
 export default function ManagerPage() {
+  const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const [usersRes, productsRes, ordersRes] = await Promise.all([
+        fetch('/api/getUsers'),
+        fetch('/api/getProducts'),
+        fetch('/api/getOrders'),
+      ]);
+
+      const usersData = await usersRes.json();
+      const productsData = await productsRes.json();
+      const ordersData = await ordersRes.json();
+
+      setUsers(usersData.users || []);
+      setProducts(productsData.products || []);
+      setOrders(ordersData.orders || []);
+    }
+    fetchData();
+  }, []);
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Manager Dashboard
-        </Typography>
+        <Typography variant="h4" gutterBottom>Manager Dashboard</Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={4}>
+          {/* Users */}
+          <Grid item xs={12} md={4}>
             <Card>
               <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Manage Users
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  View, edit, or remove registered users.
-                </Typography>
-                <Button variant="contained" color="primary" fullWidth>
-                  Go to Users
-                </Button>
+                <Typography variant="h6">Users</Typography>
+                {users.length === 0 ? (
+                  <Typography>No users found.</Typography>
+                ) : (
+                  users.map((u) => (
+                    <Typography key={u._id}>
+                      {u.username} ({u.email}) – {u.accountType}
+                    </Typography>
+                  ))
+                )}
               </CardContent>
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} md={4}>
             <Card>
               <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Manage Products
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Add new products or update existing ones.
-                </Typography>
-                <Button variant="contained" color="primary" fullWidth>
-                  Go to Products
-                </Button>
+                <Typography variant="h6">Products</Typography>
+                {products.length === 0 ? (
+                  <Typography>No products found.</Typography>
+                ) : (
+                  products.map((p) => (
+                    <Typography key={p._id}>
+                      {p.title} – €{p.price}
+                    </Typography>
+                  ))
+                )}
               </CardContent>
             </Card>
           </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} md={4}>
             <Card>
               <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  View Orders
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Track customer orders and update statuses.
-                </Typography>
-                <Button variant="contained" color="primary" fullWidth>
-                  Go to Orders
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Reports & Analytics
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  View sales reports and performance metrics.
-                </Typography>
-                <Button variant="contained" color="primary" fullWidth>
-                  Go to Reports
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Settings
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Configure system preferences and account settings.
-                </Typography>
-                <Button variant="contained" color="primary" fullWidth>
-                  Go to Settings
-                </Button>
+                <Typography variant="h6">Orders</Typography>
+                {orders.length === 0 ? (
+                  <Typography>No orders found.</Typography>
+                ) : (
+                  orders.map((o) => (
+                    <Typography key={o._id}>
+                      Order #{o._id} – {o.items.length} items – €{o.total} – {o.status}
+                    </Typography>
+                  ))
+                )}
               </CardContent>
             </Card>
           </Grid>

@@ -6,26 +6,22 @@ export async function POST(req) {
 
   try {
     const body = await req.json();
-    const { userId, product } = body;
+    const { userId } = body;
 
-    if (!userId || !product) {
-      return Response.json({ error: 'Missing fields' }, { status: 400 });
+    if (!userId) {
+      return Response.json({ error: 'Missing userId' }, { status: 400 });
     }
 
     await client.connect();
     const db = client.db('app');
     const carts = db.collection('Carts');
 
-    await carts.updateOne(
-      { userId },
-      { $push: { items: product } },
-      { upsert: true }
-    );
+    await carts.updateOne({ userId }, { $set: { items: [] } });
 
     return Response.json({ success: true });
   } catch (err) {
-    console.error('Error adding to cart:', err);
-    return Response.json({ error: 'Failed to add to cart' }, { status: 500 });
+    console.error('Error clearing cart:', err);
+    return Response.json({ error: 'Failed to clear cart' }, { status: 500 });
   } finally {
     await client.close();
   }

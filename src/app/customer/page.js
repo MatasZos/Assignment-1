@@ -1,21 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import {
-  Container,
-  Box,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
+  Container, Box, Typography, Grid, Card, CardContent, CardMedia, Button,
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
 export default function CustomerPage() {
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
   const router = useRouter();
+  const userId = "demoUserId"; // Replace with actual user ID
 
   useEffect(() => {
     async function fetchProducts() {
@@ -26,64 +19,44 @@ export default function CustomerPage() {
     fetchProducts();
   }, []);
 
-  const addToCart = (product) => {
-    setCart((prev) => [...prev, product]);
-  };
-
-  const viewCart = () => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-    router.push('/view_cart');
+  const addToCart = async (product) => {
+    await fetch('/api/putInCart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, product }),
+    });
+    alert(`${product.title} added to cart!`);
   };
 
   return (
     <Container>
       <Box sx={{ mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Customer Menu
-        </Typography>
-
-        {products.length === 0 ? (
-          <Typography sx={{ mt: 2 }}>Products loading...</Typography>
-        ) : (
-          <Grid container spacing={3}>
-            {products.map((p) => (
-              <Grid item xs={12} sm={6} key={p._id ?? p.title}>
-                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                  <CardMedia component="img" height="200" image={p.image} alt={p.title} />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6" gutterBottom>
-                      {p.title}
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
-                      {p.description}
-                    </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
-                      €{p.price}
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      fullWidth
-                      onClick={() => addToCart(p)}
-                    >
-                      Add to Cart
-                    </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
-
+        <Typography variant="h4" gutterBottom>Customer Menu</Typography>
+        <Grid container spacing={3}>
+          {products.map((p) => (
+            <Grid item xs={12} sm={6} key={p._id ?? p.title}>
+              <Card>
+                <CardMedia component="img" height="200" image={p.image} alt={p.title} />
+                <CardContent>
+                  <Typography variant="h6">{p.title}</Typography>
+                  <Typography>{p.description}</Typography>
+                  <Typography>€{p.price}</Typography>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    onClick={() => addToCart(p)}
+                  >
+                    Add to Cart
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
         <Box sx={{ mt: 6, textAlign: 'center' }}>
-          <Button
-            variant="outlined"
-            color="secondary"
-            size="large"
-            onClick={viewCart}
-            disabled={cart.length === 0}
-          >
-            View Cart ({cart.length})
+          <Button variant="outlined" color="secondary" size="large" onClick={() => router.push('/view_cart')}>
+            View Cart
           </Button>
         </Box>
       </Box>
