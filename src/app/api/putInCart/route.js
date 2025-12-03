@@ -18,6 +18,5 @@ export async function GET(req) {
     createdAt: new Date()
   });
 
-  // return result
   return Response.json({ data: "inserted" });
 }

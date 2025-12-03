@@ -6,7 +6,7 @@ export default function CheckoutPage() {
   const [message, setMessage] = useState('');
 
   const handleCheckout = async () => {
-    const res = await fetch('/api/checkout?email=customer@test.com');
+    const res = await fetch('/api/checkout?email=mataszos@test.com');
     const data = await res.json();
     setMessage(data.data); 
   };
