@@ -34,7 +34,7 @@ export default function ManagerPage() {
         <Typography variant="h4" gutterBottom>Manager Dashboard</Typography>
 
         <Grid container spacing={3}>
-          {/* Users */}
+  
           <Grid item xs={12} md={4}>
             <Card>
               <CardContent>
