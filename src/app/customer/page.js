@@ -38,7 +38,13 @@ export default function CustomerPage() {
             </Button>
           </CardContent>
         </Card>
+        
       ))}
+      <Button variant="outlined" href="/view_cart" sx={{ mt: 2 }}>
+  View Cart
+</Button>
+
     </Container>
+    
   );
 }
