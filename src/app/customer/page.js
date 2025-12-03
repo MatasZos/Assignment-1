@@ -1,5 +1,5 @@
 'use client';
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Box,
@@ -10,11 +10,14 @@ import {
   CardMedia,
   Button,
 } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 export default function CustomerPage() {
-  const [products, setProducts] = React.useState([]);
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+  const router = useRouter();
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function fetchProducts() {
       const res = await fetch('/api/products');
       const data = await res.json();
@@ -23,6 +26,14 @@ export default function CustomerPage() {
     fetchProducts();
   }, []);
 
+  const addToCart = (product) => {
+    setCart((prev) => [...prev, product]);
+  };
+
+  const viewCart = () => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    router.push('/view_cart');
+  };
 
   return (
     <Container>
@@ -38,12 +49,7 @@ export default function CustomerPage() {
             {products.map((p) => (
               <Grid item xs={12} sm={6} key={p._id ?? p.title}>
                 <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={p.image}
-                    alt={p.title}
-                  />
+                  <CardMedia component="img" height="200" image={p.image} alt={p.title} />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography variant="h6" gutterBottom>
                       {p.title}
@@ -54,7 +60,12 @@ export default function CustomerPage() {
                     <Typography variant="subtitle1" gutterBottom>
                       €{p.price}
                     </Typography>
-                    <Button variant="contained" color="primary" fullWidth>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                      onClick={() => addToCart(p)}
+                    >
                       Add to Cart
                     </Button>
                   </CardContent>
@@ -65,8 +76,14 @@ export default function CustomerPage() {
         )}
 
         <Box sx={{ mt: 6, textAlign: 'center' }}>
-          <Button variant="outlined" color="secondary" size="large">
-            View Cart
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="large"
+            onClick={viewCart}
+            disabled={cart.length === 0}
+          >
+            View Cart ({cart.length})
           </Button>
         </Box>
       </Box>
