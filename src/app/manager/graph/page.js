@@ -13,7 +13,7 @@ export default function ManagerGraphPage() {
 
   return (
     <Container sx={{ mt: 5 }}>
-      <Typography variant="h4" gutterBottom>Sales Graph (Simple)</Typography>
+      <Typography variant="h4" gutterBottom>Sales Graph</Typography>
       {sales.map((s, i) => (
         <div key={i} style={{ marginBottom: 10 }}>
           <Typography variant="body1">
