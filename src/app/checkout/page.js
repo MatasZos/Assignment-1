@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Container, Typography, Button } from '@mui/material';
-
+import NavBar from '../navigation/NavBar'; 
 export default function CheckoutPage() {
   const [message, setMessage] = useState("");
 
@@ -12,6 +12,8 @@ export default function CheckoutPage() {
   };
 
   return (
+    <>
+    <NavBar />
     <Container sx={{ mt: 5 }}>
       <Typography variant="h4" gutterBottom>Checkout</Typography>
       <Button variant="contained" color="primary" onClick={handleCheckout}>
@@ -23,5 +25,6 @@ export default function CheckoutPage() {
         </Typography>
       )}
     </Container>
+    </>
   );
 }
