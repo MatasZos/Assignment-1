@@ -7,7 +7,7 @@ export default function ManagerGraphPage() {
   const [sales, setSales] = useState([]);
 
   useEffect(() => {
-    fetch('/api/manager/sales-count')
+    fetch('/api/manager/sales')
       .then(res => res.json())
       .then(data => setSales(data));
   }, []);

@@ -14,7 +14,7 @@ export async function GET() {
     { $group: { _id: "$items.pname", count: { $sum: 1 } } }
   ];
 
-  const salesCounts = await orders.aggregate(pipeline).toArray();
+  const result = await orders.aggregate(pipeline).toArray();
 
-  return Response.json(salesCounts);
+  return Response.json(result);
 }
