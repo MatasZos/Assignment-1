@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-export async function GET(req) {
+export async function POST(req) {
   const { searchParams } = new URL(req.url);
   const email = searchParams.get('email');
 
@@ -12,10 +12,9 @@ export async function GET(req) {
   const orders = db.collection('Orders');
 
   await orders.updateMany(
-    { userEmail: email },
+    { userEmail: email, status: "pending" },
     { $set: { status: "confirmed" } }
   );
 
-  // return result
-  return Response.json({ data: "order placed" });
+  return Response.json({ message: "Order confirmed!" });
 }

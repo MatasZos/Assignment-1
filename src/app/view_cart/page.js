@@ -12,25 +12,40 @@ export default function ViewCartPage() {
   }, []);
 
   const handleDelete = async (id) => {
-    alert("Item Deleted.");
+    await fetch(`/api/deleteCartItem?id=${id}`, { method: 'DELETE' });
+    setCart(cart.filter(item => item._id !== id));
   };
+
+  const total = cart.reduce((sum, item) => {
+    const price = item.items?.[0]?.price || 0;
+    return sum + price;
+  }, 0);
 
   return (
     <Container sx={{ mt: 5 }}>
       <Typography variant="h4" gutterBottom>My Cart</Typography>
+
+      <Typography variant="h6" gutterBottom>
+        Total to Pay: €{total}
+      </Typography>
+
       {cart.map((item, i) => (
         <div key={i} style={{ marginBottom: 20 }}>
           <Typography variant="body1">
-            Product: {item.items[0].pname}
+            Product: {item.items?.[0]?.pname || "No product"}
           </Typography>
           <Typography variant="body2">
-            Added on: {new Date(item.createdAt).toLocaleString()}
+            Price: €{item.items?.[0]?.price || 0}
           </Typography>
           <Button variant="outlined" sx={{ mt: 1 }} onClick={() => handleDelete(item._id)}>
             Delete
           </Button>
         </div>
       ))}
+
+      <Button variant="contained" color="primary" href="/checkout" sx={{ mt: 3 }}>
+        Proceed to Checkout
+      </Button>
     </Container>
   );
 }
