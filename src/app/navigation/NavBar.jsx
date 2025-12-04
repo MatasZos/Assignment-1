@@ -15,9 +15,9 @@ export default function NavBar() {
           McDonalds
         </Typography>
 
-        <Button color="red" href="/customer">Product</Button>
-        <Button color="yellow" href="/view_cart">View Cart</Button>
-        <Button color="blue" href="/">Logout</Button>
+        <Button href="/customer">Product</Button>
+        <Button href="/view_cart">View Cart</Button>
+        <Button href="/">Logout</Button>
       </Toolbar>
     </AppBar>
   );
