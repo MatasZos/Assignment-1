@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Container, Typography, Button } from '@mui/material';
-
+import NavBar from '../navigation/NavBar'; 
 export default function ViewCartPage() {
   const [cart, setCart] = useState([]);
 
@@ -22,6 +22,8 @@ export default function ViewCartPage() {
   }, 0);
 
   return (
+    <>
+    <NavBar />
     <Container sx={{ mt: 5 }}>
       <Typography variant="h4" gutterBottom>My Cart</Typography>
       <Typography variant="h6" gutterBottom>Total to Pay: €{total}</Typography>
@@ -44,5 +46,6 @@ export default function ViewCartPage() {
         Proceed to Checkout
       </Button>
     </Container>
+    </>
   );
 }
