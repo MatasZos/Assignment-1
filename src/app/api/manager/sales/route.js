@@ -11,10 +11,25 @@ export async function GET() {
   const pipeline = [
     { $match: { status: "confirmed" } },
     { $unwind: "$items" },
-    { $group: { _id: "$items.pname", count: { $sum: 1 } } }
+    { $group: {
+        _id: "$_id", 
+        orderTotal: { $sum: "$items.price" },
+        createdAt: { $first: "$createdAt" }
+      }
+    },
+    { $sort: { createdAt: 1 } }
   ];
 
   const result = await orders.aggregate(pipeline).toArray();
 
-  return Response.json(result);
+  let total = 0;
+  const data = result.map(order => {
+    total += order.orderTotal;
+    return {
+      date: order.createdAt,
+      revenue: total
+    };
+  });
+
+  return Response.json(data);
 }

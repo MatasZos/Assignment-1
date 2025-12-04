@@ -1,26 +1,23 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Container, Typography } from '@mui/material';
-import { BarChart } from '@mui/x-charts/BarChart';
+import { LineChart } from '@mui/x-charts/LineChart';
 
-export default function ManagerGraphPage() {
-  const [sales, setSales] = useState([]);
+export default function RevenueGraphPage() {
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     fetch('/api/manager/sales')
       .then(res => res.json())
-      .then(data => setSales(data));
+      .then(d => setData(d));
   }, []);
-
-  const productNames = sales.map(s => s._id);
-  const productCounts = sales.map(s => s.count);
 
   return (
     <Container sx={{ mt: 5 }}>
-      <Typography variant="h4" gutterBottom>Sales Graph</Typography>
-      <BarChart
-        xAxis={[{ data: productNames }]}
-        series={[{ data: productCounts }]}
+      <Typography variant="h4" gutterBottom>Revenue Over Time</Typography>
+      <LineChart
+        xAxis={[{ data: data.map(d => new Date(d.date)), scaleType: 'time' }]}
+        series={[{ data: data.map(d => d.revenue), label: 'Revenue (€)' }]}
         height={300}
       />
     </Container>
