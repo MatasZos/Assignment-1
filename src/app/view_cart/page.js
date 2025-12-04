@@ -24,10 +24,7 @@ export default function ViewCartPage() {
   return (
     <Container sx={{ mt: 5 }}>
       <Typography variant="h4" gutterBottom>My Cart</Typography>
-
-      <Typography variant="h6" gutterBottom>
-        Total to Pay: €{total}
-      </Typography>
+      <Typography variant="h6" gutterBottom>Total to Pay: €{total}</Typography>
 
       {cart.map((item, i) => (
         <div key={i} style={{ marginBottom: 20 }}>

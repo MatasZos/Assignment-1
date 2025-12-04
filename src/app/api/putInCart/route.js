@@ -10,13 +10,17 @@ export async function GET(req) {
   await client.connect();
 
   const db = client.db('app');
+  const products = db.collection('Products');
   const orders = db.collection('Orders');
+
+  const product = await products.findOne({ pname });
 
   await orders.insertOne({
     userEmail: email,
-    items: [{ pname }],
-    createdAt: new Date()
+    items: [product],
+    createdAt: new Date(),
+    status: "pending"
   });
 
-  return Response.json({ data: "inserted" });
+  return Response.json({ message: "Added to cart" });
 }
