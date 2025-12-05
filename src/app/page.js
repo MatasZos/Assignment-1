@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
+// Home page with welcome message and navigation buttons
 export default function HomePage() {
   return (
     <Container maxWidth="sm">

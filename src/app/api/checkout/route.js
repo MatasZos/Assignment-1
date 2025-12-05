@@ -1,6 +1,8 @@
 import { MongoClient } from 'mongodb';
 
+// API route to handle checkout and create an order
 export async function POST(req) {
+  //Search for the emaail
   const { searchParams } = new URL(req.url);
   const email = searchParams.get('email');
 
@@ -14,6 +16,7 @@ export async function POST(req) {
 
   const cartItems = await carts.find({ userEmail: email }).toArray();
 
+  // If there are items in the cart, create an order
   if (cartItems.length > 0) {
     const items = cartItems.flatMap(c => c.items);
     const orderTotal = items.reduce((sum, item) => sum + (item.price || 0), 0);

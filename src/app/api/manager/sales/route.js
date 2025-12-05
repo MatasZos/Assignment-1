@@ -3,6 +3,7 @@ import { MongoClient } from "mongodb"
 const url = "mongodb+srv://root:myPassword123@cluster0.dsxawqy.mongodb.net/?appName=Cluster0";
 const dbName = "app"
 
+// API route to get total sales from all orders
 export async function GET() {
   console.log("in the customer api page")
 

@@ -1,6 +1,7 @@
 'use client';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 
+// Navigation bar component
 export default function NavBar() {
   return (
     <AppBar position="static">

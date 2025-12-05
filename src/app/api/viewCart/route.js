@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb';
 
+// API route to view cart items for a specific user
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const email = searchParams.get('email');

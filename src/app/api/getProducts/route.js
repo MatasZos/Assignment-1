@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb';
 
+// API route to get all products
 export async function GET() {
   const uri = "mongodb+srv://root:myPassword123@cluster0.dsxawqy.mongodb.net/?appName=Cluster0";
   const client = new MongoClient(uri);

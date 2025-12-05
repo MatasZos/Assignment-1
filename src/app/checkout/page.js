@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Container, Typography, Button } from '@mui/material';
 import NavBar from '../navigation/NavBar'; 
+// Checkout page with order confirmation
 export default function CheckoutPage() {
   const [message, setMessage] = useState("");
 

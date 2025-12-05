@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 import bcrypt from 'bcrypt';
 
+// API route to handle user login
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const email = searchParams.get('email');

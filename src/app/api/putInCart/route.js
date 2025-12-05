@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb';
 
+// API route to add a product to the cart for a specific user
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const pname = searchParams.get('pname');

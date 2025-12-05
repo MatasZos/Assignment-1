@@ -1,5 +1,6 @@
 import { MongoClient, ObjectId } from 'mongodb';
 
+// API route to delete a cart item by ID
 export async function DELETE(req) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
@@ -9,9 +10,9 @@ export async function DELETE(req) {
   await client.connect();
 
   const db = client.db('app');
-  const orders = db.collection('Orders');
+  const Carts = db.collection('Carts');
 
-  await orders.deleteOne({ _id: new ObjectId(id) });
+  await Carts.deleteOne({ _id: new ObjectId(id) });
 
   return Response.json({ message: "Item deleted" });
 }

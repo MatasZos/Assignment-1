@@ -6,7 +6,7 @@ import { Container, Typography, Box, Button } from "@mui/icons-material";
 import NextLink from "next/link";
 import { LineChart } from '@mui/x-charts/LineChart';
 import { BarChart } from '@mui/x-charts/BarChart';
-
+// Sales graph for manager dashboard
 export default function MyLineChart() {
 
       const [products, setProducts] = useState(null)

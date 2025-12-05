@@ -48,7 +48,7 @@ export default function CustomerPage() {
                 <CardContent>
                   <Typography variant="h6">{p.pname}</Typography>
                   <Typography variant="body2">{p.description}</Typography>
-                  <Typography variant="body1">Price: ${p.price}</Typography>
+                  <Typography variant="body1">Price: €{p.price}</Typography>
                   <Button variant="outlined" sx={{ mt: 1 }} onClick={() => addToCart(p.pname)}>
                     Add to Cart
                   </Button>

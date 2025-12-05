@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Container, Typography, Button } from '@mui/material';
 
+// Manager dashboard showing orders and link to sales graph
 
 export default function ManagerPage() {
   const [orders, setOrders] = useState([]);
@@ -12,6 +13,7 @@ export default function ManagerPage() {
       .then(data => setOrders(data));
   }, []);
 
+  // Show orders and a button to view sales graph
   return (
     <Container sx={{ mt: 5 }}>
       <Typography variant="h4" gutterBottom>Manager Dashboard</Typography>
