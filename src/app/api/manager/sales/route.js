@@ -8,26 +8,15 @@ export async function GET() {
   const db = client.db('app');
   const orders = db.collection('Orders');
 
-  const pipeline = [
-    { $match: { status: "confirmed" } },
-    { $unwind: "$items" },
-    { $group: {
-        _id: "$_id", 
-        orderTotal: { $sum: "$items.price" },
-        createdAt: { $first: "$createdAt" }
-      }
-    },
-    { $sort: { createdAt: 1 } }
-  ];
+  const result = await orders.find({ status: "confirmed" }).sort({ createdAt: 1 }).toArray();
 
-  const result = await orders.aggregate(pipeline).toArray();
-
-  let total = 0;
+  let cumulative = 0;
   const data = result.map(order => {
-    total += order.orderTotal;
+    const orderTotal = order.items.reduce((sum, item) => sum + item.price, 0);
+    cumulative += orderTotal;
     return {
       date: order.createdAt,
-      revenue: total
+      revenue: cumulative
     };
   });
 

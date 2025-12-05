@@ -9,14 +9,21 @@ export async function POST(req) {
   await client.connect();
 
   const db = client.db('app');
+  const carts = db.collection('Carts');
   const orders = db.collection('Orders');
+  const cartItems = await carts.find({ userEmail: email }).toArray();
 
-  await orders.insertOne({
-    userEmail: email,
-    items: [], 
-    createdAt: new Date(),
-    status: "confirmed"
-  });
+  if (cartItems.length > 0) {
+    await orders.insertOne({
+      userEmail: email,
+      items: cartItems.flatMap(c => c.items),
+      createdAt: new Date(),
+      status: "confirmed"
+    });
+    await carts.deleteMany({ userEmail: email });
 
-  return Response.json({ message: "Order confirmed" });
+    return Response.json({ message: "Order confirmed" });
+  }
+
+  return Response.json({ message: "Cart is empty" });
 }
