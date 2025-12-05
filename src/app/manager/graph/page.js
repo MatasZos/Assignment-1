@@ -20,7 +20,7 @@ export default function MyLineChart() {
   return (
     
       <BarChart
-      xAxis={[{ data: ['Orders'] }]}
+      xAxis={[{ data: ['Revenue Total from Orders'] }]}
       series={[{ data: [products, 0, 0] }]}
       height={300}
     />
