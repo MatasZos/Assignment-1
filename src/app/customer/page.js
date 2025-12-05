@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Container, Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
-import NavBar from '../navigation/NavBar';   
+import { Container, Card, CardContent, CardMedia, Typography, Button, Grid } from '@mui/material';
+import NavBar from '../navigation/NavBar';
 
 export default function CustomerPage() {
   const [products, setProducts] = useState([]);
@@ -25,7 +25,7 @@ export default function CustomerPage() {
 
   return (
     <>
-      <NavBar />  
+      <NavBar />
       <Container sx={{ mt: 5 }}>
         {weather && (
           <Typography variant="h6" gutterBottom>
@@ -34,24 +34,29 @@ export default function CustomerPage() {
         )}
 
         <Typography variant="h4" gutterBottom>Products</Typography>
-        {products.map((p, i) => (
-          <Card key={i} sx={{ mb: 2 }}>
-            <CardMedia
-              component="img"
-              height="140"
-              image={p.imageUrl}
-              alt={p.pname}
-            />
-            <CardContent>
-              <Typography variant="h6">{p.pname}</Typography>
-              <Typography variant="body2">{p.description}</Typography>
-              <Typography variant="body1">Price: ${p.price}</Typography>
-              <Button variant="outlined" sx={{ mt: 1 }} onClick={() => addToCart(p.pname)}>
-                Add to Cart
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+
+        <Grid container spacing={3}>
+          {products.map((p, i) => (
+            <Grid item xs={12} sm={6} md={4} key={i}>
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={p.imageUrl}
+                  alt={p.pname}
+                />
+                <CardContent>
+                  <Typography variant="h6">{p.pname}</Typography>
+                  <Typography variant="body2">{p.description}</Typography>
+                  <Typography variant="body1">Price: ${p.price}</Typography>
+                  <Button variant="outlined" sx={{ mt: 1 }} onClick={() => addToCart(p.pname)}>
+                    Add to Cart
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
         <Button variant="outlined" href="/view_cart" sx={{ mt: 2 }}>
           View Cart
