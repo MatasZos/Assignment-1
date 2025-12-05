@@ -29,7 +29,7 @@ export default function CustomerPage() {
       <Container sx={{ mt: 5 }}>
         {weather && (
           <Typography variant="h6" gutterBottom>
-            Weather in Dublin: {weather.temperature}°C,{weather.current_weather} Wind {weather.windspeed} km/h
+            Weather in Dublin: {weather.temperature}°C, Wind {weather.windspeed} km/h
           </Typography>
         )}
 
