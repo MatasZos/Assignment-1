@@ -21,5 +21,5 @@ export async function GET(req) {
     status: "pending"
   });
 
-  return Response.json({ message: "Added to cart" });
+  return Response.json({ data: "Product added to cart" });
 }
