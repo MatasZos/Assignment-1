@@ -16,10 +16,12 @@ export async function POST(req) {
   if (cartItems.length > 0) {
     await orders.insertOne({
       userEmail: email,
-      items: cartItems.flatMap(c => c.items),
+      items: cartItems.flatMap(c => c.items), 
       createdAt: new Date(),
       status: "confirmed"
     });
+
+    // Clear the cart
     await carts.deleteMany({ userEmail: email });
 
     return Response.json({ message: "Order confirmed" });

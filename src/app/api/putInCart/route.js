@@ -11,16 +11,14 @@ export async function GET(req) {
 
   const db = client.db('app');
   const products = db.collection('Products');
-  const orders = db.collection('Orders');
-
+  const carts = db.collection('Carts');
   const product = await products.findOne({ pname });
-
-  await orders.insertOne({
+  await carts.insertOne({
     userEmail: email,
     items: [product],
     createdAt: new Date(),
     status: "pending"
   });
 
-  return Response.json({ data: "Added to cart" });
+  return Response.json({ message: "Added to cart" });
 }
