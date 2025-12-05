@@ -41,6 +41,7 @@ export default function LoginPage() {
       >
         Login
       </Button>
+      If you don't have an account, please <a href="/register">register here</a>.
     </Container>
   );
 }
