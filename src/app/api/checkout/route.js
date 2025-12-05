@@ -11,10 +11,12 @@ export async function POST(req) {
   const db = client.db('app');
   const orders = db.collection('Orders');
 
-  await orders.updateMany(
-    { userEmail: email, status: "pending" },
-    { $set: { status: "confirmed" } }
-  );
+  await orders.insertOne({
+    userEmail: email,
+    items: [], 
+    createdAt: new Date(),
+    status: "confirmed"
+  });
 
-  return Response.json({ message: "Order confirmed!" });
+  return Response.json({ message: "Order confirmed" });
 }
