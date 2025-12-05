@@ -41,7 +41,7 @@ export default function CustomerPage() {
               <Card>
                 <CardMedia
                   component="img"
-                  height="140"
+                  height="200"
                   image={p.imageUrl}
                   alt={p.pname}
                 />
