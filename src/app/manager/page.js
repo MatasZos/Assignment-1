@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Container, Typography, Button } from '@mui/material';
+import NavBar from '../navigation/NavBar';
 
 export default function ManagerPage() {
   const [orders, setOrders] = useState([]);
@@ -12,6 +13,8 @@ export default function ManagerPage() {
   }, []);
 
   return (
+    <>
+        <NavBar />
     <Container sx={{ mt: 5 }}>
       <Typography variant="h4" gutterBottom>Manager Dashboard</Typography>
       {orders.map((order, i) => (
@@ -35,5 +38,6 @@ export default function ManagerPage() {
         View Sales Graph
       </Button>
     </Container>
+    </>
   );
 }
