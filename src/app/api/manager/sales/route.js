@@ -1,23 +1,30 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient } from "mongodb"
+
+const url = "mongodb+srv://root:myPassword123@cluster0.dsxawqy.mongodb.net/?appName=Cluster0";
+const dbName = "app"
 
 export async function GET() {
-  const uri = "mongodb+srv://root:myPassword123@cluster0.dsxawqy.mongodb.net/?appName=Cluster0";
-  const client = new MongoClient(uri);
-  await client.connect();
+  console.log("in the customer api page")
 
-  const db = client.db('app');
-  const orders = db.collection('Orders');
+    const client = new MongoClient(url)
+    await client.connect()
+    console.log("Connected successfully to customer")
 
-  const result = await orders.find({ status: "confirmed" }).sort({ createdAt: 1 }).toArray();
+    const db = client.db(dbName)
+    const collection = db.collection("Orders")
 
-  let cumulative = 0;
-  const data = result.map(order => {
-    cumulative += order.total || 0; 
-    return {
-      date: order.createdAt,
-      revenue: cumulative
-    };
-  });
+    const products = await collection.find({}).toArray()
+    console.log("Found Products...", products)
 
-  return Response.json(data);
+    let total = 0;
+
+    products.forEach(record => {
+  console.log(record.total);
+
+  total = total + record.total;
+});
+
+    await client.close()
+
+    return Response.json({"total": total})
 }

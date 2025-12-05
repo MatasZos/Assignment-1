@@ -1,25 +1,27 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { Container, Typography } from '@mui/material';
+
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { Container, Typography, Box, Button } from "@mui/icons-material";
+import NextLink from "next/link";
 import { LineChart } from '@mui/x-charts/LineChart';
+import { BarChart } from '@mui/x-charts/BarChart';
 
-export default function RevenueGraphPage() {
-  const [data, setData] = useState([]);
+export default function MyLineChart() {
 
-  useEffect(() => {
-    fetch('/api/manager/sales')
-      .then(res => res.json())
-      .then(d => setData(d));
-  }, []);
+      const [products, setProducts] = useState(null)
 
+
+      useEffect(() => {
+        fetch('/api/manager/sales')
+        .then((res) => res.json())
+        .then((data) => setProducts(data.total))
+        }, [])
   return (
-    <Container sx={{ mt: 5 }}>
-      <Typography variant="h4" gutterBottom>Revenue Over Time</Typography>
-      <LineChart
-        xAxis={[{ data: data.map(d => new Date(d.date)), scaleType: 'time' }]}
-        series={[{ data: data.map(d => d.revenue), label: 'Revenue (€)' }]}
-        height={300}
-      />
-    </Container>
+      <BarChart
+      xAxis={[{ data: ['Orders'] }]}
+      series={[{ data: [products, 0, 0] }]}
+      height={300}
+    />
   );
 }
