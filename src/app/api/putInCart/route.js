@@ -13,6 +13,7 @@ export async function GET(req) {
   const products = db.collection('Products');
   const carts = db.collection('Carts');
   const product = await products.findOne({ pname });
+
   await carts.insertOne({
     userEmail: email,
     items: [product],

@@ -9,9 +9,9 @@ export async function GET(req) {
   await client.connect();
 
   const db = client.db('app');
-  const orders = db.collection('Orders');
+  const carts = db.collection('Carts');
 
-  const cartItems = await orders.find({ userEmail: email }).toArray();
+  const cartItems = await carts.find({ userEmail: email }).toArray();
 
   return Response.json(cartItems);
 }

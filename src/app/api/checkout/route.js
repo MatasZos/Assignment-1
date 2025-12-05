@@ -11,20 +11,24 @@ export async function POST(req) {
   const db = client.db('app');
   const carts = db.collection('Carts');
   const orders = db.collection('Orders');
+
   const cartItems = await carts.find({ userEmail: email }).toArray();
 
   if (cartItems.length > 0) {
+    const items = cartItems.flatMap(c => c.items);
+    const orderTotal = items.reduce((sum, item) => sum + (item.price || 0), 0);
+
     await orders.insertOne({
       userEmail: email,
-      items: cartItems.flatMap(c => c.items), 
+      items,
+      total: orderTotal, 
       createdAt: new Date(),
       status: "confirmed"
     });
 
-    // Clear the cart
     await carts.deleteMany({ userEmail: email });
 
-    return Response.json({ message: "Order confirmed" });
+    return Response.json({ message: "Order confirmed", total: orderTotal });
   }
 
   return Response.json({ message: "Cart is empty" });
