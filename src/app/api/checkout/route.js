@@ -17,5 +17,5 @@ export async function POST(req) {
     status: "confirmed"
   });
 
-  return Response.json({ data: "Order saved" });
+  return Response.json({ message: "Order confirmed" });
 }
