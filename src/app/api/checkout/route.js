@@ -15,16 +15,17 @@ export async function POST(req) {
   const cartItems = await carts.find({ userEmail: email }).toArray();
 
   if (cartItems.length > 0) {
-    const items = cartItems.flatMap(c => c.items);
-    const orderTotal = items.reduce((sum, item) => sum + (item.price || 0), 0);
+  const items = cartItems.flatMap(c => c.items);
+  const orderTotal = items.reduce((sum, item) => sum + (item.price || 0), 0);
 
-    await orders.insertOne({
-      userEmail: email,
-      items,
-      total: orderTotal, 
-      createdAt: new Date(),
-      status: "confirmed"
-    });
+  const result = await orders.insertOne({
+    userEmail: email,
+    items,
+    total: orderTotal,
+    createdAt: new Date(),
+    status: "confirmed"
+  });
+
 
     await carts.deleteMany({ userEmail: email });
 
